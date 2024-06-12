@@ -1,13 +1,13 @@
-class Title extends HTMLElement {
-  constructor() {
-    super();
+import Input from "./form/input.js";
+import TextArea from "./form/textarea.js";
+import Rating from "./form/rating.js";
+import Range from "./form/range.js";
+import { Select, Option } from "./form/select.js";
 
-    const element = document.createElement("h1");
-    element.innerText = "Hello World!";
-
-    const shadowRoot = this.attachShadow({ mode: "open" });
-    shadowRoot.appendChild(element);
-  }
-}
-
-window.customElements.define("st-title", Title);
+window.customElements.define("st-input", Input);
+window.customElements.define("st-textarea", TextArea);
+window.customElements.define("st-rating", Rating);
+window.customElements.define("st-range", Range);
+window.customElements.define("st-select", Select);
+window.customElements.define("st-fragment", DocumentFragment);
+window.customElements.define("st-option", Option);

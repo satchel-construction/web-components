@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.range-end::-webkit-slider-runnable-track {
+  background-color: transparent;
+}
+
+.range-end::-moz-range-track {
+  background-color: transparent;
+}
+
+.range-end::-ms-range-track {
+  background-color: transparent;
+}
+
+input[type="range"].no-slider::-webkit-slider-thumb {
+  color: transparent !important;
+  background-color: oklch(var(--b1) / 1) !important; 
+  pointer-events: auto;
+}
+
+input[type="range"].no-slider::-moz-range-thumb {
+  color: transparent !important;
+  background-color: oklch(var(--b1) / 1) !important; 
+  pointer-events: auto;
+}
+
+input[type="range"].no-slider::-ms-range-thumb {
+  color: transparent !important;
+  background-color: oklch(var(--b1) / 1) !important; 
+  pointer-events: auto;
+}
