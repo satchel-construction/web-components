@@ -1,0 +1,14 @@
+{
+  "name": "web-components",
+  "version": "1.0.0",
+  "description": "Default web components used by Satchel Construction.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.4"
+  }
+}
