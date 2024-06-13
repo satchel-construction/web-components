@@ -21,7 +21,7 @@ export default class Select extends HTMLElement {
           <div id="divider" class="divider hidden !m-0"></div>
           <ul id="options" class="dropdown-content z-[1] menu p-2 bg-base-100 w-full hidden max-h-72 overflow-scroll flex-nowrap options !p-0 bg-transparent rounded-lg"></ul>
         </label>
-        <div class="label !p-0"><span class="label-text-alt text-error !select-text error-message"></span></div>
+        <div class="label !p-0 hidden"><span class="label-text-alt text-error !select-text error-message"></span></div>
       </div>`;
 
     this.attachShadow({ mode: "open" });
@@ -40,12 +40,11 @@ export default class Select extends HTMLElement {
     this.limit = 0;
 
     this.bindEvents();
-    this.render();
   }
 
   sort() {
     const searchValue = this.search.value;
-    if (!searchValue.length) return []; 
+    if (!searchValue.length) return this.option_values; 
 
     return fuzzysort.go(searchValue, this.option_values, { keys: ["title", "value"] })
       .map((item) => item.obj);
@@ -69,10 +68,7 @@ export default class Select extends HTMLElement {
 
       anchor.innerText = option.title;
       anchor.tabIndex = 0;
-      anchor.onclick = () => {
-        this.select(option);
-        this.render();
-      };
+      anchor.onclick = () => this.select(option);
 
       li.appendChild(anchor);
       this.options.appendChild(li);
@@ -82,6 +78,7 @@ export default class Select extends HTMLElement {
   /** @param {{ title: string, value: string, chip: string }} option */
   select(option) {
     this.search.value = option.title; 
+    this.render();
   }
 
   attributeChangedCallback(name, _, newValue) {
@@ -92,6 +89,8 @@ export default class Select extends HTMLElement {
     } else if (name === "placeholder") {
       this.search.placeholder = newValue;
     }
+
+    this.render();
   }
 
   bindEvents() {

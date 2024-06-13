@@ -17,9 +17,21 @@
         start-name="class_min"
         end-name="class_max"
       >License Classification:</st-range>
-      <st-select data-options='[{"title": "Option #1", "value": "1", "chip": "Option #1"}]' data-limit="50" placeholder="Ollo"></st-select>
+      <st-tagged-select 
+        data-options='[
+          {"title": "Option #1", "value": "1", "chip": "option-1"}, 
+          {"title": "Option #2", "value": "2", "chip": "option-2"},
+          {"title": "Option #3", "value": "3", "chip": "option-3"},
+          {"title": "Option #4", "value": "4", "chip": "option-4"},
+          {"title": "Option #5", "value": "5", "chip": "option-5"}
+        ]' 
+        data-limit="50" 
+        placeholder="Ollo"
+      >Tagged Select</st-tagged-select>
       <st-textarea name="test" placeholder="Testing">Example</st-textarea>
       <div class="w-4"></div>
     </div>
+    <script>
+    </script>
   </body>
 </html>
