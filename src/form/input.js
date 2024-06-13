@@ -14,7 +14,7 @@ export default class Input extends HTMLElement {
       <div class="input input-bordered h-full p-0">
         <p id="title" class="text-xs px-2 pt-2 title"><slot></slot></p>
         <div class="divider !m-0 w-full title"></div>
-        <input class="h-10 w-full px-2 pb-2" autocomplete="off">
+        <input class="h-10 w-full px-2 pb-2 placeholder:opacity-25" autocomplete="off">
       </div>
     `;
 
