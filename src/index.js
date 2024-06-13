@@ -9,3 +9,9 @@ window.customElements.define("st-textarea", TextArea);
 window.customElements.define("st-rating", Rating);
 window.customElements.define("st-range", Range);
 window.customElements.define("st-select", Select);
+
+window.SatchelTools.Input = Input;
+window.SatchelTools.TextArea = TextArea;
+window.SatchelTools.Rating = Rating;
+window.SatchelTools.Range = Range;
+window.SatchelTools.Select = Select;
