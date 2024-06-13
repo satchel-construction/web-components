@@ -7,6 +7,7 @@ export default {
   output: {
     file: 'dist/bundle.js',
     format: 'iife',
+    name: 'SatchelTools',
     plugins: [terser()],
     globals: {
       fuzzysort: 'fuzzysort',

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/fuzzysort@3.0.1/fuzzysort.min.js"></script>
+    <script type="text/javascript" src="../dist/bundle.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" /> 
+    <script src="https://cdn.tailwindcss.com/3.4.4"></script>
+  </head>
+  <body>
+    <div class="w-96 p-4">
+      <st-input name="test_input" placeholder="Placeholder">Title</st-input>
+      <st-rating name="test_input" value="4">Company Rating:</st-rating>
+      <st-range
+        start-name="class_min"
+        end-name="class_max"
+      >License Classification:</st-range>
+      <st-select data-options='[{"title": "Option #1", "value": "1", "chip": "Option #1"}]' data-limit="50" placeholder="Ollo"></st-select>
+      <st-textarea name="test" placeholder="Testing">Example</st-textarea>
+      <div class="w-4"></div>
+    </div>
+  </body>
+</html>
