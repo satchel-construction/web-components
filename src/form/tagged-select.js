@@ -42,7 +42,7 @@ export default class TaggedSelect extends Select {
         this.setAttribute("data-tagged", JSON.stringify(tagsWithoutCurr));
       }
 
-      tagElement.className = "badge badge-neutral";
+      tagElement.className = "badge badge-neutral truncate";
       tagElement.innerText = tag.chip;
       tagElement.appendChild(remove);
 
