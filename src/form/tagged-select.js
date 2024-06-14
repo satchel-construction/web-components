@@ -16,7 +16,7 @@ export default class TaggedSelect extends Select {
 
   /** @param {{ title: string, value: string, chip: string }} option */
   select(option) {
-    this.tagged.push(option);
+    this.tagged.push(option.value);
     this.setAttribute("data-tagged", JSON.stringify(this.tagged));
   }
 
@@ -37,7 +37,7 @@ export default class TaggedSelect extends Select {
       remove.innerText = "x";
       remove.className = "pl-1 text-neutral-content font-bold cursor-pointer outline-none focus:text-error";
       remove.onclick = () => {
-        const tagsWithoutCurr = this.tagged.filter((item) => item.value !== tag.value);
+        const tagsWithoutCurr = this.tagged.filter((item) => item !== tag);
         this.setAttribute("data-tagged", JSON.stringify(tagsWithoutCurr));
       }
 
@@ -50,7 +50,7 @@ export default class TaggedSelect extends Select {
   }
 
   setAccessible() {
-    const taggedSet = new Set(this.tagged.map(tag => tag.value));
+    const taggedSet = new Set(this.tagged);
     const filteredOptions = this.option_values.filter((opt) => !taggedSet.has(opt.value));
     this.setAttribute("data-accessible", JSON.stringify(filteredOptions));
   }
@@ -64,7 +64,7 @@ export default class TaggedSelect extends Select {
       this.limit = +newValue;
       this.render("data-limit");
     } else if (name === "data-tagged") {
-      /** @type {{ title: string, value: string, chip: string }} */
+      /** @type {string[]} */
       this.tagged = JSON.parse(newValue);  
       this.renderChips();
 
