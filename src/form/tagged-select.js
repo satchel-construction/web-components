@@ -6,7 +6,7 @@ export default class TaggedSelect extends Select {
   constructor() {
     super();
 
-    this.tagged = [];
+    this.tagged = new Set();
     this.accessible = [];
 
     this.tags = document.createElement("div");
@@ -16,8 +16,8 @@ export default class TaggedSelect extends Select {
 
   /** @param {{ title: string, value: string, chip: string }} option */
   select(option) {
-    this.tagged.push(option.value);
-    this.setAttribute("data-tagged", JSON.stringify(this.tagged));
+    this.tagged.add(option.value);
+    this.setAttribute("data-tagged", JSON.stringify(Array.from(this.tagged)));
   }
 
   sort() {
@@ -30,14 +30,15 @@ export default class TaggedSelect extends Select {
 
   renderChips() {
     this.tags.innerHTML = "";
-    this.tagged.forEach((tag) => {
+    const options = this.option_values.filter(option => this.tagged.has(option.value));
+    options.forEach((tag) => {
       const tagElement = document.createElement("div");
       const remove = document.createElement("button");
 
       remove.innerText = "x";
       remove.className = "pl-1 text-neutral-content font-bold cursor-pointer outline-none focus:text-error";
       remove.onclick = () => {
-        const tagsWithoutCurr = this.tagged.filter((item) => item !== tag);
+        const tagsWithoutCurr = Array.from(this.tagged).filter((curr) => curr !== tag);
         this.setAttribute("data-tagged", JSON.stringify(tagsWithoutCurr));
       }
 
@@ -50,8 +51,7 @@ export default class TaggedSelect extends Select {
   }
 
   setAccessible() {
-    const taggedSet = new Set(this.tagged);
-    const filteredOptions = this.option_values.filter((opt) => !taggedSet.has(opt.value));
+    const filteredOptions = this.option_values.filter((opt) => !this.tagged.has(opt.value));
     this.setAttribute("data-accessible", JSON.stringify(filteredOptions));
   }
 
@@ -64,8 +64,8 @@ export default class TaggedSelect extends Select {
       this.limit = +newValue;
       this.render("data-limit");
     } else if (name === "data-tagged") {
-      /** @type {string[]} */
-      this.tagged = JSON.parse(newValue);  
+      /** @type {Set<string>} */
+      this.tagged = new Set(JSON.parse(newValue));
       this.renderChips();
 
       this.setAccessible();
