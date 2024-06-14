@@ -34,6 +34,7 @@ export default class TaggedSelect extends Select {
     options.forEach((tag) => {
       const tagElement = document.createElement("div");
       const remove = document.createElement("button");
+      const text = document.createElement("p");
 
       remove.innerText = "x";
       remove.className = "pl-1 text-neutral-content font-bold cursor-pointer outline-none focus:text-error";
@@ -42,8 +43,11 @@ export default class TaggedSelect extends Select {
         this.setAttribute("data-tagged", JSON.stringify(tagsWithoutCurr));
       }
 
-      tagElement.className = "badge badge-neutral truncate";
-      tagElement.innerText = tag.chip;
+      text.className = "truncate";
+      text.innerText = tag.chip;
+
+      tagElement.className = "badge badge-neutral";
+      tagElement.appendChild(text);
       tagElement.appendChild(remove);
 
       this.tags.appendChild(tagElement); 
