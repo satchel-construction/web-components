@@ -20,7 +20,6 @@ export default class Select extends HTMLElement {
           <p id="title" class="text-xs px-2 pt-2 title text-start w-full hidden"><slot></slot></p>
           <div id="divider" class="divider hidden !m-0 title"></div>
           <input id="search" class="w-full self-start px-4 py-2 placeholder:opacity-25" size="1" />
-          <input class="hidden" />
           <div id="divider" class="divider hidden !m-0"></div>
           <ul id="options" class="dropdown-content z-[1] menu p-2 bg-base-100 w-full hidden max-h-72 overflow-scroll flex-nowrap options !p-0 bg-transparent rounded-lg"></ul>
         </label>
@@ -82,6 +81,7 @@ export default class Select extends HTMLElement {
   select(option) {
     this.search.value = option.title; 
     this.render();
+    this._internals.setFormValue(option.value);
   }
 
   attributeChangedCallback(name, _, newValue) {

@@ -11,8 +11,9 @@ export default {
     plugins: [terser()],
     globals: {
       fuzzysort: 'fuzzysort',
+      zod: 'Zod',
     },
   },
   plugins: [resolve({ moduleDirectory: ['node_modules'], browser: true }), css()],
-  external: ['fuzzysort'],
+  external: ['fuzzysort', 'Zod'],
 };

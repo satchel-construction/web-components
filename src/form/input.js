@@ -29,7 +29,8 @@ export default class Input extends HTMLElement {
     this.titleElements = this.shadowRoot.querySelectorAll(".title");
     this.titleElements.forEach((element) => element.style.display = "none");
     this.innerInput.style.paddingTop = "8px";
-    this._interals = this.attachInternals();
+
+    this._internals = this.attachInternals();
   }
 
   get value() {
@@ -50,6 +51,10 @@ export default class Input extends HTMLElement {
       this.innerInput.style.paddingTop = "8px";
       this.titleElements.forEach((element) => element.style.display = "none");
     });
+
+    this.innerInput.addEventListener("input", (event) => {
+      this._internals.setFormValue(event.target.value);
+    });
   }
 
   attributeChangedCallback(name, _, newValue) {
@@ -59,6 +64,7 @@ export default class Input extends HTMLElement {
       this.innerInput.name = newValue;
     } else if (name === "value") {
       this.innerInput.value = newValue;
+      this._internals.setFormValue(newValue);
     }
   }
 }

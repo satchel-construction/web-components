@@ -70,6 +70,7 @@ export default class TaggedSelect extends Select {
     } else if (name === "data-tagged") {
       /** @type {Set<string>} */
       this.tagged = new Set(JSON.parse(newValue));
+      this._internals.setFormValue(newValue);
       this.renderChips();
 
       this.setAccessible();

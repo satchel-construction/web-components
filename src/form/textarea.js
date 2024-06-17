@@ -42,6 +42,7 @@ export default class TextArea extends HTMLElement {
   }
 
   connectedCallback() {
+    this._internals.setFormValue('');
     this.innerInput.addEventListener("focus", () => {
       this.innerInput.style.paddingTop = "0";
       this.titleElements.forEach((element) => element.style.display = "flex");
@@ -51,6 +52,10 @@ export default class TextArea extends HTMLElement {
       this.innerInput.style.paddingTop = "8px";
       this.titleElements.forEach((element) => element.style.display = "none");
     });
+
+    this.innerInput.addEventListener("input", (event) => {
+      this._internals.setFormValue(event.target.value);
+    });
   }
 
   attributeChangedCallback(name, _, newValue) {
@@ -58,6 +63,7 @@ export default class TextArea extends HTMLElement {
       this.innerInput.placeholder = newValue;
     } else if (name === "name") {
       this.innerInput.name = newValue;
+      this._internals.setFormValue(newValue);
     } else if (name === "value") {
       this.innerInput.value = newValue;
     }

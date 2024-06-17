@@ -5,9 +5,12 @@ stylesheet.replaceSync(styles);
 
 export default class Rating extends HTMLElement {
   static observedAttributes = ["name", "value"];
+  static formAssociated = true;
 
   constructor() {
     super();
+
+    this._internals = this.attachInternals();
 
     const template = document.createElement("template");
     template.innerHTML = `
@@ -16,7 +19,6 @@ export default class Rating extends HTMLElement {
           <p class="text-md align-middle" id="title"><slot></slot></p>
         </div>
         <div class="flex items-center justify-end grow">
-          <input class="hidden">
           <div class="rating rating-sm">
             <input type="radio" class="mask mask-star-2 bg-orange-400 rating-item">
             <input type="radio" class="mask mask-star-2 bg-orange-400 rating-item">
@@ -32,7 +34,6 @@ export default class Rating extends HTMLElement {
     this.shadowRoot.append(template.content.cloneNode(true));
 
     this.rating_ele = this.shadowRoot.querySelectorAll(".rating-item");
-    this.rating_hidden = this.shadowRoot.querySelector("input.hidden");
 
     this.bindEvents();
   }
@@ -47,14 +48,14 @@ export default class Rating extends HTMLElement {
 
   attributeChangedCallback(name, _, newValue) {
     if (name === "name") {
-      this.rating_hidden.setAttribute("name", newValue);
       this.rating_ele.forEach((element) => element.name = `${newValue}-radio`);
     } else if (name === "value") {
-      this.rating_hidden.value = +newValue;
       this.rating_ele.forEach((element, idx) => {
         if (idx !== +newValue - 1) return;
         element.checked = true;
       });
+
+      this._internals.setFormValue(newValue);
     }
   }
 

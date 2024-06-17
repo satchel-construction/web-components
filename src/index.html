@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/zod@3.23.8/lib/index.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fuzzysort@3.0.1/fuzzysort.min.js"></script>
     <script type="text/javascript" src="../dist/bundle.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" /> 
     <script src="https://cdn.tailwindcss.com/3.4.4"></script>
   </head>
   <body>
-    <div class="w-96 p-4">
+    <form class="w-96 p-4">
       <st-input name="test_input" placeholder="Placeholder">Title</st-input>
-      <st-rating name="test_input" value="4">Company Rating:</st-rating>
+      <st-rating name="test_rating" value="4">Company Rating:</st-rating>
       <st-range
         start-name="class_min"
         end-name="class_max"
@@ -26,12 +27,20 @@
           {"title": "Option #5", "value": "5", "chip": "option-5"}
         ]' 
         data-limit="50" 
+        name="options"
         placeholder="Ollo"
       >Tagged Select</st-tagged-select>
       <st-textarea name="test" placeholder="Testing">Example</st-textarea>
-      <div class="w-4"></div>
-    </div>
+      <button type="submit" class="btn btn-neutral my-2">Submit</button>
+    </form>
     <script>
+      const form = document.querySelector("form");
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        console.log(Object.fromEntries(formData));
+      });
     </script>
   </body>
 </html>

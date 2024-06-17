@@ -1,13 +1,17 @@
+import { z } from 'zod';
 import styles from '../../dist/bundle.css';
 
 const stylesheet = new CSSStyleSheet();
 stylesheet.replaceSync(styles);
 
 export default class Range extends HTMLElement {
+  static observedAttributes = ["start-name", "end-name"];
+  static formAssociated = true;
+
   constructor() {
     super();
 
-    this._interals = this.attachInternals();
+    this._internals = this.attachInternals();
 
     const template = document.createElement("template");
     template.innerHTML = `
@@ -44,6 +48,25 @@ export default class Range extends HTMLElement {
     this.setGradient();
   }
 
+  get value() {
+    return [
+      this.range_start.value,
+      this.range_end.value
+    ];
+  }
+
+  set value(newValue) {
+    let schema = z.array(z.number()).length(2);
+    let json = JSON.parse(newValue);
+
+    let response = schema.safeParse(json);
+    if (!response.data) return;
+
+    this.range_start.value = response.data[0];
+    this.range_end.value = response.data[1];
+    this.update();
+  }
+
   update() {
     const [start, end] = [this.range_start.value, this.range_end.value];
     if ((end - start) <= 0) {
@@ -52,6 +75,12 @@ export default class Range extends HTMLElement {
     }
 
     this.label.innerText = `${start} - ${end}`;
+
+    const data = new FormData();
+    data.append(this.getAttribute("start-name"), start);
+    data.append(this.getAttribute("end-name"), end);
+
+    this._internals.setFormValue(data);
     this.setGradient();
   }
 
