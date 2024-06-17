@@ -5,7 +5,7 @@ const stylesheet = new CSSStyleSheet();
 stylesheet.replaceSync(styles);
 
 export default class Range extends HTMLElement {
-  static observedAttributes = ["start-name", "end-name"];
+  static observedAttributes = ["data-error", "start-name", "end-name"];
   static formAssociated = true;
 
   constructor() {
@@ -27,7 +27,8 @@ export default class Range extends HTMLElement {
         <div class="flex items-center justify-end grow">
           <p class="range-label"></p>
         </div>
-      </div>`;
+      </div>
+      <p id="error-field" class="text-error text-sm px-1"></p>`;
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.adoptedStyleSheets = [stylesheet];
@@ -38,6 +39,7 @@ export default class Range extends HTMLElement {
 
     this.intersect = this.shadowRoot.querySelector("div.range-intersect");
     this.label = this.shadowRoot.querySelector("p.range-label");
+    this.errorField = this.shadowRoot.querySelector("#error-field");
 
     this.range_start.setAttribute("name", this.getAttribute("start-name"));
     this.range_end.setAttribute("name", this.getAttribute("end-name"));
@@ -98,5 +100,14 @@ export default class Range extends HTMLElement {
       var(--fallback-bc, oklch(var(--bc) / 1)) ${((this.range_end.value - 1) / 4) * 100}%,
       #0000 ${((this.range_end.value - 1) / 4) * 100}%,
       #0000 100%)`;
+  }
+
+  attributeChangedCallback(name, _, newValue) {
+    if (name === "data-error") {
+      if (!newValue) this.errorField.style.display = "none";
+      else this.errorField.style.display = "block";
+
+      this.errorField.innerText = newValue;
+    }
   }
 }

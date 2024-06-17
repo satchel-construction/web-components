@@ -12,11 +12,14 @@
   </head>
   <body>
     <form class="w-96 p-4">
-      <st-input name="test_input" placeholder="Placeholder">Title</st-input>
-      <st-rating name="test_rating" value="4">Company Rating:</st-rating>
+      <st-input name="test_input" placeholder="Placeholder" data-error="Hello, World!">Title</st-input>
+      <st-input name="test_input" placeholder="Placeholder" data-error="Hello, World!">Title</st-input>
+      <st-input name="test_input" placeholder="Placeholder" data-error="Hello, World!">Title</st-input>
+      <st-rating name="test_rating" value="4" data-error="Hello, World!">Company Rating:</st-rating>
       <st-range
         start-name="class_min"
         end-name="class_max"
+        data-error="Hello, World!"
       >License Classification:</st-range>
       <st-tagged-select 
         data-options='[
@@ -29,8 +32,9 @@
         data-limit="50" 
         name="options"
         placeholder="Ollo"
+        data-error="Hello, World!"
       >Tagged Select</st-tagged-select>
-      <st-textarea name="test" placeholder="Testing">Example</st-textarea>
+      <st-textarea name="test" placeholder="Testing" data-error="Hello, World!">Example</st-textarea>
       <button type="submit" class="btn btn-neutral my-2">Submit</button>
     </form>
     <script>

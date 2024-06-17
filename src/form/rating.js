@@ -4,7 +4,7 @@ const stylesheet = new CSSStyleSheet();
 stylesheet.replaceSync(styles);
 
 export default class Rating extends HTMLElement {
-  static observedAttributes = ["name", "value"];
+  static observedAttributes = ["data-error", "name", "value"];
   static formAssociated = true;
 
   constructor() {
@@ -27,13 +27,15 @@ export default class Rating extends HTMLElement {
             <input type="radio" class="mask mask-star-2 bg-orange-400 rating-item">
           </div>
         </div>
-      </div>`;
+      </div>
+      <p class="text-error text-sm px-1" id="error-field"></p>`;
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.adoptedStyleSheets = [stylesheet];
     this.shadowRoot.append(template.content.cloneNode(true));
 
     this.rating_ele = this.shadowRoot.querySelectorAll(".rating-item");
+    this.errorField = this.shadowRoot.querySelector("#error-field");
 
     this.bindEvents();
   }
@@ -56,6 +58,11 @@ export default class Rating extends HTMLElement {
       });
 
       this._internals.setFormValue(newValue);
+    } else if (name === "data-error") {
+      if (!newValue) this.errorField.style.display = "none";
+      else this.errorField.style.display = "block";
+
+      this.errorField.innerText = newValue;
     }
   }
 

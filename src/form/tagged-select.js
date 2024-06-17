@@ -1,7 +1,7 @@
 import Select from './select.js';
 
 export default class TaggedSelect extends Select {
-  static observedAttributes = ["data-options", "data-limit", "data-tagged", "data-accessible", "placeholder"];
+  static observedAttributes = ["data-options", "data-limit", "data-tagged", "data-accessible", "data-error", "placeholder"];
 
   constructor() {
     super();
@@ -11,7 +11,8 @@ export default class TaggedSelect extends Select {
 
     this.tags = document.createElement("div");
     this.tags.className = "p-1 flex gap-1 flex-wrap";
-    this.shadowRoot.appendChild(this.tags);
+    this.shadowRoot.insertBefore(this.tags, this.shadowRoot.querySelector("p#error-field"));
+    this.renderChips();
   }
 
   /** @param {{ title: string, value: string, chip: string }} option */
@@ -31,6 +32,9 @@ export default class TaggedSelect extends Select {
   renderChips() {
     this.tags.innerHTML = "";
     const options = this.option_values.filter(option => this.tagged.has(option.value));
+    if (!options.length) this.tags.style.display = "none";
+    else this.tags.style.display = "flex";
+
     options.forEach((tag) => {
       const tagElement = document.createElement("div");
       const remove = document.createElement("button");
@@ -77,6 +81,17 @@ export default class TaggedSelect extends Select {
       this.render();
     } else if (name === "data-accessible") {
       this.accessible = JSON.parse(newValue);
+    } else if (name === "data-error") {
+      if (!newValue) {
+        this.errorField.style.display = "none";
+        this.shadowRoot.querySelector(".input").className = this.shadowRoot.querySelector(".input").className.split(" ").filter((className) => className !== "input-error").join(" ");
+        this.titleElement.className = this.titleElement.className.split(" ").filter((className) => className !== "text-error").join(" ");
+      } else {
+        this.errorField.style.display = "block";
+        this.errorField.innerText = newValue;
+        this.shadowRoot.querySelector(".input").className += " input-error";
+        this.titleElement.className += " text-error";
+      }
     } else if (name === "placeholder") {
       this.search.placeholder = newValue;
     }

@@ -5,7 +5,7 @@ const stylesheet = new CSSStyleSheet();
 stylesheet.replaceSync(styles);
 
 export default class Select extends HTMLElement {
-  static observedAttributes = ["data-options", "data-limit", "placeholder"];
+  static observedAttributes = ["data-error", "data-options", "data-limit", "placeholder"];
   static formAssociated = true;
 
   constructor() {
@@ -24,7 +24,8 @@ export default class Select extends HTMLElement {
           <ul id="options" class="dropdown-content z-[1] menu p-2 bg-base-100 w-full hidden max-h-72 overflow-scroll flex-nowrap options !p-0 bg-transparent rounded-lg"></ul>
         </label>
         <div class="label !p-0 hidden"><span class="label-text-alt text-error !select-text error-message"></span></div>
-      </div>`;
+      </div>
+      <p class="text-error text-sm py-1" id="error-field"></p>`;
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.adoptedStyleSheets = [stylesheet];
@@ -34,6 +35,7 @@ export default class Select extends HTMLElement {
     this.options = this.shadowRoot.querySelector("#options");
     this.dividers = this.shadowRoot.querySelectorAll(".divider");
     this.titleElement = this.shadowRoot.querySelector("#title");
+    this.errorField = this.shadowRoot.querySelector("#error-field");
 
     /** @type {{ title: string, value: string, chip: string }[]} */
     this.option_values = [];
@@ -85,7 +87,18 @@ export default class Select extends HTMLElement {
   }
 
   attributeChangedCallback(name, _, newValue) {
-    if (name === "data-options") {
+    if (name === "data-error") {
+      if (!newValue) {
+        this.errorField.style.display = "none";
+        this.shadowRoot.querySelector(".input").className = this.shadowRoot.querySelector(".input").className.split(" ").filter((className) => className !== "input-error").join(" ");
+        this.titleElement.className = this.titleElement.className.split(" ").filter((className) => className !== "text-error").join(" ");
+      } else {
+        this.errorField.style.display = "block";
+        this.errorField.innerText = newValue;
+        this.shadowRoot.querySelector(".input").className += " input-error";
+        this.titleElement.className += " text-error";
+      }
+    } else if (name === "data-options") {
       this.option_values = JSON.parse(newValue);
     } else if (name === "data-limit") {
       this.limit = +newValue;
