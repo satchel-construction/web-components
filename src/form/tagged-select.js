@@ -2,7 +2,6 @@ import Select from './select.js';
 
 export default class TaggedSelect extends Select {
   static observedAttributes = ["data-options", "data-limit", "data-tagged", "data-accessible", "placeholder"];
-  static formAssociated = true;
 
   constructor() {
     super();
@@ -13,7 +12,6 @@ export default class TaggedSelect extends Select {
     this.tags = document.createElement("div");
     this.tags.className = "p-1 flex gap-1 flex-wrap";
     this.shadowRoot.appendChild(this.tags);
-    this._internals = this.attachInternals();
   }
 
   /** @param {{ title: string, value: string, chip: string }} option */
