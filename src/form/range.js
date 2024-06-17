@@ -7,6 +7,8 @@ export default class Range extends HTMLElement {
   constructor() {
     super();
 
+    this._interals = this.attachInternals();
+
     const template = document.createElement("template");
     template.innerHTML = `
       <div class="flex flex-row p-1">

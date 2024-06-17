@@ -6,9 +6,12 @@ stylesheet.replaceSync(styles);
 
 export default class Select extends HTMLElement {
   static observedAttributes = ["data-options", "data-limit", "placeholder"];
+  static formAssociated = true;
 
   constructor() {
     super();
+
+    this._internals = this.attachInternals();
 
     const template = document.createElement("template");
     template.innerHTML = `

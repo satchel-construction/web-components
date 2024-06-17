@@ -5,6 +5,7 @@ stylesheet.replaceSync(styles);
 
 export default class Input extends HTMLElement {
   static observedAttributes = ["placeholder", "name", "value"];
+  static formAssociated = true;
 
   constructor() {
     super();
@@ -28,6 +29,7 @@ export default class Input extends HTMLElement {
     this.titleElements = this.shadowRoot.querySelectorAll(".title");
     this.titleElements.forEach((element) => element.style.display = "none");
     this.innerInput.style.paddingTop = "8px";
+    this._interals = this.attachInternals();
   }
 
   get value() {

@@ -5,9 +5,12 @@ stylesheet.replaceSync(styles);
 
 export default class TextArea extends HTMLElement {
   static observedAttributes = ["placeholder", "name", "value"];
+  static formAssociated = true;
 
   constructor() {
     super();
+
+    this._internals = this.attachInternals();
 
     const template = document.createElement("template");
     template.innerHTML = `
