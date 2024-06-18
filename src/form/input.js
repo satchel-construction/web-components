@@ -17,7 +17,7 @@ export default class Input extends HTMLElement {
         <div class="divider !m-0 w-full title"></div>
         <input class="h-10 w-full px-2 pb-2 placeholder:opacity-25" autocomplete="off">
       </div>
-      <p class="text-error text-sm py-1" id="error-field"></p>
+      <p class="text-error text-sm py-1 hidden" id="error-field"></p>
     `;
 
     this.attachShadow({ mode: "open" });

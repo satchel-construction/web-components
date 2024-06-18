@@ -25,7 +25,7 @@ export default class Select extends HTMLElement {
         </label>
         <div class="label !p-0 hidden"><span class="label-text-alt text-error !select-text error-message"></span></div>
       </div>
-      <p class="text-error text-sm py-1" id="error-field"></p>`;
+      <p class="text-error text-sm py-1 hidden" id="error-field"></p>`;
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.adoptedStyleSheets = [stylesheet];

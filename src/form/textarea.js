@@ -19,7 +19,7 @@ export default class TextArea extends HTMLElement {
         <div class="divider !m-0 w-full title"></div>
         <textarea class="w-full px-2 pb-2 outline-none bg-transparent min-h-10 -mb-[6px] placeholder:text-base placeholder:opacity-25" autocomplete="off"></textarea>
       </div>
-      <p class="text-error text-sm py-1" id="error-field"></p>
+      <p class="text-error text-sm py-1 hidden" id="error-field"></p>
     `;
 
     this.attachShadow({ mode: "open" });

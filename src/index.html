@@ -11,33 +11,24 @@
     <script src="https://cdn.tailwindcss.com/3.4.4"></script>
   </head>
   <body>
-    <form class="w-96 p-4">
-      <st-input name="test_input" placeholder="Placeholder" data-error="Hello, World!">Title</st-input>
-      <st-input name="test_input" placeholder="Placeholder" data-error="Hello, World!">Title</st-input>
-      <st-input name="test_input" placeholder="Placeholder" data-error="Hello, World!">Title</st-input>
-      <st-rating name="test_rating" value="4" data-error="Hello, World!">Company Rating:</st-rating>
-      <st-range
-        start-name="class_min"
-        end-name="class_max"
-        data-error="Hello, World!"
-      >License Classification:</st-range>
-      <st-tagged-select 
-        data-options='[
-          {"title": "Option #1", "value": "1", "chip": "option-1"}, 
-          {"title": "Option #2", "value": "2", "chip": "option-2"},
-          {"title": "Option #3", "value": "3", "chip": "option-3"},
-          {"title": "Option #4", "value": "4", "chip": "option-4"},
-          {"title": "Option #5", "value": "5", "chip": "option-5"}
-        ]' 
-        data-limit="50" 
-        name="options"
-        placeholder="Ollo"
-        data-error="Hello, World!"
-      >Tagged Select</st-tagged-select>
-      <st-textarea name="test" placeholder="Testing" data-error="Hello, World!">Example</st-textarea>
+    <form class="w-96 p-4 flex flex-col gap-1">
+      <st-tagged-select name="test_input" placeholder="Placeholder" data-limit="5">Title</st-tagged-select>
+      <st-tagged-select name="test_input" placeholder="Placeholder" data-limit="5">Title</st-tagged-select>
+      <st-tagged-select name="test_input" placeholder="Placeholder" data-limit="5">Title</st-tagged-select>
       <button type="submit" class="btn btn-neutral my-2">Submit</button>
     </form>
     <script>
+      const taggedSelects = document.querySelectorAll("st-tagged-select");
+      taggedSelects.forEach((select) => {
+        select.setAttribute("data-options", JSON.stringify([
+          { title: "Option #1", value: "option-1", chip: "opt-1" },
+          { title: "Option #2", value: "option-2", chip: "opt-2" },
+          { title: "Option #3", value: "option-3", chip: "opt-3" },
+          { title: "Option #4", value: "option-4", chip: "opt-4" },
+          { title: "Option #5", value: "option-5", chip: "opt-5" },
+        ]));
+      });
+
       const form = document.querySelector("form");
       form.addEventListener("submit", (event) => {
         event.preventDefault();

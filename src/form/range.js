@@ -28,7 +28,7 @@ export default class Range extends HTMLElement {
           <p class="range-label"></p>
         </div>
       </div>
-      <p id="error-field" class="text-error text-sm px-1"></p>`;
+      <p id="error-field" class="text-error text-sm px-1 hidden"></p>`;
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.adoptedStyleSheets = [stylesheet];

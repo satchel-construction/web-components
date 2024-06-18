@@ -28,7 +28,7 @@ export default class Rating extends HTMLElement {
           </div>
         </div>
       </div>
-      <p class="text-error text-sm px-1" id="error-field"></p>`;
+      <p class="text-error text-sm px-1 hidden" id="error-field"></p>`;
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.adoptedStyleSheets = [stylesheet];
