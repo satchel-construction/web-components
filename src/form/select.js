@@ -109,6 +109,10 @@ export default class Select extends HTMLElement {
     this.render();
   }
 
+  get value() {
+    return this.search.value;
+  }
+
   bindEvents() {
     this.search.addEventListener("keyup", () => this.render());
 

@@ -21,6 +21,10 @@ export default class TaggedSelect extends Select {
     this.setAttribute("data-tagged", JSON.stringify(Array.from(this.tagged)));
   }
 
+  get value() {
+    return JSON.parse(this.getAttribute("data-tagged"));
+  }
+
   sort() {
     const searchValue = this.search.value;
     if (!searchValue.length) return this.accessible; 
