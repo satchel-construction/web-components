@@ -12,6 +12,7 @@ export default class Select extends HTMLElement {
     super();
 
     this._internals = this.attachInternals();
+    this.currentValue;
 
     const template = document.createElement("template");
     template.innerHTML = `
@@ -84,6 +85,7 @@ export default class Select extends HTMLElement {
     this.search.value = option.title; 
     this.render();
     this._internals.setFormValue(option.value);
+    this.currentValue = option.value;
   }
 
   attributeChangedCallback(name, _, newValue) {
@@ -110,7 +112,7 @@ export default class Select extends HTMLElement {
   }
 
   get value() {
-    return this.search.value;
+    return this.currentValue;
   }
 
   bindEvents() {
