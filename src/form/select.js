@@ -17,7 +17,7 @@ export default class Select extends HTMLElement {
     const template = document.createElement("template");
     template.innerHTML = `
       <div class="flex flex-col gap-y-1 select-box">
-        <label class="input input-bordered flex flex-col items-center w-full label h-fit !p-0">
+        <label id="input-field" class="input input-bordered flex flex-col items-center w-full label h-fit !p-0">
           <p id="title" class="text-xs px-2 pt-2 title text-start w-full hidden"><slot></slot></p>
           <div id="divider" class="divider hidden !m-0 title"></div>
           <input id="search" class="w-full self-start px-4 py-2 placeholder:opacity-25" size="1" />
@@ -32,11 +32,13 @@ export default class Select extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets = [stylesheet];
     this.shadowRoot.append(template.content.cloneNode(true));
 
-    this.search  = this.shadowRoot.querySelector("#search");
+    this.search = this.shadowRoot.querySelector("#search");
     this.options = this.shadowRoot.querySelector("#options");
-    this.dividers = this.shadowRoot.querySelectorAll(".divider");
     this.titleElement = this.shadowRoot.querySelector("#title");
     this.errorField = this.shadowRoot.querySelector("#error-field");
+
+    this.inputField = this.shadowRoot.querySelector("#input-field");
+    this.hiddenDropdownContent = this.inputField.querySelectorAll(":not(input)");
 
     /** @type {{ title: string, value: string, chip: string }[]} */
     this.option_values = [];
@@ -119,26 +121,20 @@ export default class Select extends HTMLElement {
     this.search.addEventListener("keyup", () => this.render());
 
     this.search.addEventListener("focus", () => {
-      this.options.style.display = 'flex';
-      this.titleElement.style.display = 'flex';
-      this.dividers.forEach(divider => divider.style.display = 'flex');
+      this.hiddenDropdownContent.forEach(content => content.style.display = 'flex');
       this.search.style.paddingBottom = '0';
       this.search.style.paddingTop = '0';
     });
 
     this.addEventListener("blur", () => {
-      this.options.style.display = 'none';
-      this.titleElement.style.display = 'none';
-      this.dividers.forEach(divider => divider.style.display = 'none');
+      this.hiddenDropdownContent.forEach(content => content.style.display = 'none');
       this.search.style.paddingBottom = '0.5rem';
       this.search.style.paddingTop = '0.5rem';
     });
 
     document.addEventListener('mousedown', ({ target }) => {
       if (!this.contains(target) && this.options.style.display !== 'none') {
-        this.options.style.display = 'none';
-        this.titleElement.style.display = 'none';
-        this.dividers.forEach(divider => divider.style.display = 'none');
+        this.hiddenDropdownContent.forEach(content => content.style.display = 'none');
         this.search.style.paddingBottom = '0.5rem';
         this.search.style.paddingTop = '0.5rem';
       }
