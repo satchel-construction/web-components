@@ -126,7 +126,7 @@ export default class Select extends HTMLElement {
       this.search.style.paddingTop = '0';
     });
 
-    this.addEventListener("blur", () => {
+    this.addEventListener("blur", ({ target }) => {
       if (!this.inputField.contains(target) && this.options.style.display !== 'none') {
         this.hiddenDropdownContent.forEach(content => content.style.display = 'none');
         this.search.style.paddingBottom = '0.5rem';
