@@ -39,7 +39,6 @@ export default class Select extends HTMLElement {
 
     this.inputField = this.shadowRoot.querySelector("#input-field");
     this.hiddenDropdownContent = this.inputField.querySelectorAll(":not(input)");
-    this.hiddenDropdownContent.forEach((ele) => console.dir(ele));
 
     /** @type {{ title: string, value: string, chip: string }[]} */
     this.option_values = [];
@@ -128,13 +127,15 @@ export default class Select extends HTMLElement {
     });
 
     this.addEventListener("blur", () => {
-      this.hiddenDropdownContent.forEach(content => content.style.display = 'none');
-      this.search.style.paddingBottom = '0.5rem';
-      this.search.style.paddingTop = '0.5rem';
+      if (!this.inputField.contains(target) && this.options.style.display !== 'none') {
+        this.hiddenDropdownContent.forEach(content => content.style.display = 'none');
+        this.search.style.paddingBottom = '0.5rem';
+        this.search.style.paddingTop = '0.5rem';
+      }
     });
 
     document.addEventListener('mousedown', ({ target }) => {
-      if (!this.contains(target) && this.options.style.display !== 'none') {
+      if (!this.inputField.contains(target) && this.options.style.display !== 'none') {
         this.hiddenDropdownContent.forEach(content => content.style.display = 'none');
         this.search.style.paddingBottom = '0.5rem';
         this.search.style.paddingTop = '0.5rem';
