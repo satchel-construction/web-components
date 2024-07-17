@@ -127,7 +127,7 @@ export default class Select extends HTMLElement {
     });
 
     this.addEventListener("focusout", ({ target }) => {
-      if (!this.inputField.contains(target) && this.options.style.display !== 'none') {
+      if (!this.contains(target) && this.options.style.display !== 'none') {
         this.hiddenDropdownContent.forEach(content => content.style.display = 'none');
         this.search.style.paddingBottom = '0.5rem';
         this.search.style.paddingTop = '0.5rem';
@@ -135,7 +135,7 @@ export default class Select extends HTMLElement {
     });
 
     document.addEventListener('mousedown', ({ target }) => {
-      if (!this.inputField.contains(target) && this.options.style.display !== 'none') {
+      if (!this.contains(target) && this.options.style.display !== 'none') {
         this.hiddenDropdownContent.forEach(content => content.style.display = 'none');
         this.search.style.paddingBottom = '0.5rem';
         this.search.style.paddingTop = '0.5rem';
