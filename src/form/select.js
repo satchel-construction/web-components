@@ -118,7 +118,7 @@ export default class Select extends HTMLElement {
   }
 
   set value(newValue) {
-    let option = this.options
+    let option = this.option_values
       .find(o => o.value === newValue);
     if (!option) return;
 
