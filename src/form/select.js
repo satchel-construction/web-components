@@ -122,7 +122,7 @@ export default class Select extends HTMLElement {
       .find(o => o.value === newValue);
     if (!option) return;
 
-    select(option);
+    this.select(option);
   }
 
   bindEvents() {
