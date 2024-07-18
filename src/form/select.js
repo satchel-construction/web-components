@@ -117,6 +117,14 @@ export default class Select extends HTMLElement {
     return this.currentValue;
   }
 
+  set value(newValue) {
+    let option = this.options
+      .find(o => o.value === newValue);
+    if (!option) return;
+
+    select(option);
+  }
+
   bindEvents() {
     this.search.addEventListener("keyup", () => this.render());
 
