@@ -15,7 +15,7 @@ export default class TaggedSelect extends Select {
     this.renderChips();
   }
 
-  /** @param {{ title: string, value: string, chip: string }} option */
+  /** @param {{ title: string, value: string, chip: string, active?: boolean }} option */
   select(option) {
     this.tagged.add(option.value);
     this.setAttribute("data-tagged", JSON.stringify(Array.from(this.tagged)));
@@ -54,7 +54,7 @@ export default class TaggedSelect extends Select {
       text.className = "truncate";
       text.innerText = tag.chip;
 
-      tagElement.className = "badge badge-neutral";
+      tagElement.className = tag.active === false ? "badge badge-ghost" : "badge badge-neutral";
       tagElement.appendChild(text);
       tagElement.appendChild(remove);
 

@@ -40,7 +40,7 @@ export default class Select extends HTMLElement {
     this.inputField = this.shadowRoot.querySelector("#input-field");
     this.hiddenDropdownContent = this.inputField.querySelectorAll(":not(input)");
 
-    /** @type {{ title: string, value: string, chip: string }[]} */
+    /** @type {{ title: string, value: string, chip: string, active?: boolean }[]} */
     this.option_values = [];
 
     /** @type {number} */
