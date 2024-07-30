@@ -120,7 +120,7 @@ export default class Select extends HTMLElement {
   set value(newValue) {
     if (!newValue) {
       this.search.value = ""; 
-      this.reload();
+      this.render();
       this._internals.setFormValue("");
       this.currentValue = "";
 
