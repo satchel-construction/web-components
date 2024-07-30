@@ -118,6 +118,14 @@ export default class Select extends HTMLElement {
   }
 
   set value(newValue) {
+    if (!newValue) {
+      this.search.value = ""; 
+      this._internals.setFormValue("");
+      this.currentValue = "";
+
+      return;
+    }
+
     let option = this.option_values
       .find(o => o.value === newValue);
     if (!option) return;
