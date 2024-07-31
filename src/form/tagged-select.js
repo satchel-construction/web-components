@@ -55,7 +55,7 @@ export default class TaggedSelect extends Select {
       text.innerText = tag.chip;
 
       tagElement.className = tag.active === false ? "badge badge-ghost" : "badge badge-neutral";
-      tagElement.setAttribute("data-id", tag.value);
+      tagElement.setAttribute("data-tag-id", tag.value);
       tagElement.appendChild(text);
       tagElement.appendChild(remove);
 
