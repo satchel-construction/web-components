@@ -8,7 +8,7 @@ export default class TaggedSelect extends Select {
 
     this.tagged = new Set();
     this.accessible = [];
-    this.tagClick = () => {};
+    this._tagClick = () => {};
 
     this.tags = document.createElement("div");
     this.tags.className = "p-1 flex gap-1 flex-wrap";
@@ -27,12 +27,12 @@ export default class TaggedSelect extends Select {
   }
 
   get tagClick() {
-    return this.tagClick;
+    return this._tagClick;
   }
 
   set tagClick(cb) {
     if (typeof cb !== "function") return; 
-    this.tagClick = cb;
+    this._tagClick = cb;
   }
 
   sort() {
@@ -65,7 +65,7 @@ export default class TaggedSelect extends Select {
       text.innerText = tag.chip;
 
       tagElement.className = tag.active === false ? "badge badge-ghost" : "badge badge-neutral";
-      tagElement.onclick = () => this.tagClick(tag);
+      tagElement.onclick = () => this._tagClick(tag);
       tagElement.appendChild(text);
       tagElement.appendChild(remove);
 
