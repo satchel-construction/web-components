@@ -57,7 +57,7 @@ export default class TaggedSelect extends Select {
       remove.innerText = "x";
       remove.className = "pl-1 text-neutral-content font-bold cursor-pointer outline-none focus:text-error";
       remove.addEventListener("click", (event) => {
-        event.preventDefault();
+        event.stopPropagation();
         const tagsWithoutCurr = Array.from(this.tagged).filter((curr) => curr !== tag.value);
         this.setAttribute("data-tagged", JSON.stringify(tagsWithoutCurr));
       });
@@ -66,10 +66,7 @@ export default class TaggedSelect extends Select {
       text.innerText = tag.chip;
 
       tagElement.className = tag.active === false ? "badge badge-ghost" : "badge badge-neutral";
-      tagElement.addEventListener("click", (event) => {
-        console.log(event);
-        this.tagClick(tag)
-      });
+      tagElement.addEventListener("click", () => this.tagClick(tag));
       tagElement.appendChild(text);
       tagElement.appendChild(remove);
 
