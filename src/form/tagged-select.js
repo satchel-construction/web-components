@@ -33,6 +33,7 @@ export default class TaggedSelect extends Select {
   set tagClick(cb) {
     if (typeof cb !== "function") return; 
     this._tagClick = cb;
+    console.log(this._tagClick);
   }
 
   sort() {
