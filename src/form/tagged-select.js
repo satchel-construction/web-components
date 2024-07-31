@@ -65,7 +65,10 @@ export default class TaggedSelect extends Select {
       text.innerText = tag.chip;
 
       tagElement.className = tag.active === false ? "badge badge-ghost" : "badge badge-neutral";
-      tagElement.onclick = () => this.tagClick(tag);
+      tagElement.addEventListener("click", () => {
+        console.log(this.tagClick);
+        this.tagClick(tag);
+      });
       tagElement.appendChild(text);
       tagElement.appendChild(remove);
 
