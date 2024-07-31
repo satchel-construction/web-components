@@ -56,10 +56,11 @@ export default class TaggedSelect extends Select {
 
       remove.innerText = "x";
       remove.className = "pl-1 text-neutral-content font-bold cursor-pointer outline-none focus:text-error";
-      remove.onclick = () => {
+      remove.addEventListener("click", (event) => {
+        event.preventDefault();
         const tagsWithoutCurr = Array.from(this.tagged).filter((curr) => curr !== tag.value);
         this.setAttribute("data-tagged", JSON.stringify(tagsWithoutCurr));
-      }
+      });
 
       text.className = "truncate";
       text.innerText = tag.chip;
