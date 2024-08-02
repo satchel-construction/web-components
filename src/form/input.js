@@ -36,11 +36,11 @@ export default class Input extends HTMLElement {
   }
 
   get value() {
-    return this.innerInput.getAttribute('value');
+    return this.getAttribute('value');
   }
 
   set value(newValue) {
-    this.innerInput.setAttribute('value', newValue);
+    this.setAttribute('value', newValue);
   }
 
   connectedCallback() {
