@@ -36,11 +36,11 @@ export default class TextArea extends HTMLElement {
   }
 
   get value() {
-    return this.getAttribute('value');
+    return this.innerInput.getAttribute('value');
   }
 
   set value(newValue) {
-    this.setAttribute('value', newValue);
+    this.innerInput.setAttribute('value', newValue);
   }
 
   connectedCallback() {
