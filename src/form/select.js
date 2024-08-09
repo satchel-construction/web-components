@@ -12,6 +12,13 @@ stylesheet.replaceSync(styles);
  * @property {boolean|undefined} active
  */
 
+function removeClass(original, className) {
+  return original
+    .split(" ")
+    .filter((c) => c !== className)
+    .join(" ");
+}
+
 export default class Select extends HTMLElement {
   static formAssociated = true;
 
@@ -52,11 +59,61 @@ export default class Select extends HTMLElement {
     this.bindEvents();
   }
 
+  /** @param {string} newValue */
+  set error(newValue) {
+    if (!newValue) {
+      this.errorMessage.style.display = "none";
+      this.inputContainer.className = removeClass(this.inputContainer.className, "input-error");
+      this.titleElement.className = removeClass(this.titleElement.className, "text-error");
+
+      this.render();
+
+      return;
+    }
+
+    this.errorMessage.style.display = "block";
+    this.errorMessage.innerText = newValue;
+    this.inputContainer.className += " input-error";
+    this.titleElement.className += " text-error";
+
+    this.render();
+  }
+
   /** @param {Option[]} newValue */
-  set options(newValue) { this._options = newValue; }
+  set options(newValue) { 
+    this._options = newValue; 
+    this.render();
+  }
 
   /** @param {number} newValue */
-  set limit(newValue) { this._limit = newValue; }
+  set limit(newValue) { 
+    this._limit = newValue; 
+    this.render();
+  }
+
+  /** @returns {string} */
+  get value() { return this._value; }
+
+  /** @param {string} newValue */
+  set value(newValue) {
+    if (!newValue) {
+      this.searchField.value = ""; 
+      this._internals.setFormValue("");
+      this._value = "";
+
+      this.render();
+
+      return;
+    }
+
+    const option = this._options.find((opt) => {
+      return opt.value === newValue
+    });
+    
+    if (!option) return;
+
+    this.select(option);
+  }
 
   sort() {
     if (!this.searchField.value) return this._options; 
@@ -94,6 +151,15 @@ export default class Select extends HTMLElement {
       li.appendChild(anchor);
       options.push(li);
     });
+  }
+
+  /** @param {Option} option */
+  select(option) {
+    this.search.value = option.title; 
+    this._internals.setFormValue(option.value);
+    this.currentValue = option.value;
+
+    this.render();
   }
 
   render() {
@@ -248,9 +314,7 @@ class Select2 extends HTMLElement {
     this.render();
   }
 
-  get value() {
-    return this.currentValue;
-  }
+  get value() { return this.currentValue; }
 
   set value(newValue) {
     if (!newValue) {
