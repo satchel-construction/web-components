@@ -12,27 +12,28 @@
   </head>
   <body>
     <form class="w-96 p-4 flex flex-col gap-1">
-      <st-tagged-select name="test_input" placeholder="Placeholder">Title</st-tagged-select>
+      <!-- <st-tagged-select name="test_input" placeholder="Placeholder">Title</st-tagged-select> -->
+      <st-input placeholder="placeholder" name="name">words</st-input>
       <button type="submit" class="btn btn-neutral my-2">Submit</button>
     </form>
     <script>
-      const select = document.querySelector("st-tagged-select");
-      select.limit = 5;
-      select.options = [
-        { title: "Option #1", value: "option-1", chip: "opt-1" },
-        { title: "Option #2", value: "option-2", chip: "opt-2" },
-        { title: "Option #3", value: "option-3", chip: "opt-3" },
-        { title: "Option #4", value: "option-4", chip: "opt-4" },
-        { title: "Option #5", value: "option-5", chip: "opt-5" },
-      ];
+      // const select = document.querySelector("st-tagged-select");
+      // select.limit = 5;
+      // select.options = [
+      //   { title: "Option #1", value: "option-1", chip: "opt-1" },
+      //   { title: "Option #2", value: "option-2", chip: "opt-2" },
+      //   { title: "Option #3", value: "option-3", chip: "opt-3" },
+      //   { title: "Option #4", value: "option-4", chip: "opt-4" },
+      //   { title: "Option #5", value: "option-5", chip: "opt-5" },
+      // ];
 
-      const form = document.querySelector("form");
-      form.addEventListener("submit", (event) => {
-        event.preventDefault();
+      // const form = document.querySelector("form");
+      // form.addEventListener("submit", (event) => {
+      //   event.preventDefault();
 
-        const formData = new FormData(form);
-        console.log(Object.fromEntries(formData));
-      });
+      //   const formData = new FormData(form);
+      //   console.log(Object.fromEntries(formData));
+      // });
     </script>
   </body>
 </html>
