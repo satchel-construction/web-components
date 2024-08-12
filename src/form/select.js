@@ -20,7 +20,7 @@ function removeClass(original, className) {
 }
 
 export default class Select extends HTMLElement {
-  static observedAttributes = ["placeholder"];
+  static observedAttributes = ["placeholder", "name"];
   static formAssociated = true;
 
   constructor() {
@@ -52,29 +52,31 @@ export default class Select extends HTMLElement {
     this.titleElement = this.shadowRoot.querySelector("p#title");
     this.errorMessage = this.shadowRoot.querySelector("p#error-field");
     this.inputContainer = this.shadowRoot.querySelector("label#input-container");
-    this.dropdownContent = this.inputContainer.querySelectorAll(":not(input)");
+    this.dropdownContent = this.inputContainer.querySelectorAll(".input :not(input)");
 
     /** @type {Option[]} */
     this._options = [];
     this._limit = 50;
   }
 
+  get error() { return this.errorMessage.innerText || null; }
+
   /** @param {string} newValue */
   set error(newValue) {
-    if (!newValue) {
-      this.errorMessage.style.display = "none";
-      this.inputContainer.className = removeClass(this.inputContainer.className, "input-error");
-      this.titleElement.className = removeClass(this.titleElement.className, "text-error");
-
-      this.render();
-
-      return;
-    }
+    if (!newValue) return this.clearErrors();
 
     this.errorMessage.style.display = "block";
     this.errorMessage.innerText = newValue;
     this.inputContainer.className += " input-error";
     this.titleElement.className += " text-error";
+
+    this.render();
+  }
+
+  clearErrors() {
+    this.errorMessage.style.display = "none";
+    this.inputContainer.className = removeClass(this.inputContainer.className, "input-error");
+    this.titleElement.className = removeClass(this.titleElement.className, "text-error");
 
     this.render();
   }
@@ -106,13 +108,8 @@ export default class Select extends HTMLElement {
       return;
     }
 
-    const option = this._options.find((opt) => {
-      return opt.value === newValue
-    });
-    
-    if (!option) return;
-
-    this.select(option);
+    const option = this._options.find((opt) => opt.value === newValue);
+    if (!!option) this.select(option);
   }
 
   sort() {
@@ -161,7 +158,7 @@ export default class Select extends HTMLElement {
   select(option) {
     this.searchField.value = option.title; 
     this._internals.setFormValue(option.value);
-    this.currentValue = option.value;
+    this._value = option.value;
 
     this.render();
   }
@@ -211,7 +208,10 @@ export default class Select extends HTMLElement {
   }
 
   attributeChangedCallback(name, _, newValue) {
-    if (name !== "placeholder") return;
-    this.searchField.placeholder = newValue;
+    if (name === "placeholder") {
+      this.searchField.setAttribute("placeholder", newValue);
+    } else if (name === "name") {
+      this.searchField.setAttribute("name", newValue);
+    }
   }
 }

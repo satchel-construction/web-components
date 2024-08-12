@@ -44,7 +44,7 @@ export default class Input extends HTMLElement {
     this._internals.setFormValue(newValue);
   }
 
-  get error() { return this.errorMessage.innerText; }
+  get error() { return this.errorMessage.innerText || null; }
   set error(newValue) {
     if (!newValue) return this.clearErrors();
 

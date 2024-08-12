@@ -16,8 +16,6 @@ export default class TaggedSelect extends Select {
     this._tagged = new Set();
     this._tagClick = null;
 
-    this._tagged.add("option-1");
-
     this.tagContainer = document.createElement('div');
     this.tagContainer.className = "p-1 flex gap-1 flex-wrap hidden";
     this.shadowRoot.insertBefore(this.tagContainer, this.errorMessage);
@@ -30,7 +28,7 @@ export default class TaggedSelect extends Select {
     }
 
     this._tagged = newValue;
-    this._internals.setFormValue(JSON.stringify(newValue));
+    this._internals.setFormValue(JSON.stringify(Array.from(newValue)));
 
     this.renderChips();
     this.render();
@@ -46,10 +44,7 @@ export default class TaggedSelect extends Select {
   select(option) {
     if (!this._tagged) return;
     this._tagged.add(option.value);
-    this._internals.setFormValue(this._tagged);
-
-    this.renderChips();
-    this.render();
+    this.value = this._tagged;
   }
 
   sort() {
