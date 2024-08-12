@@ -12,22 +12,37 @@
   </head>
   <body>
     <form class="w-96 p-4 flex flex-col gap-1">
-      <st-tagged-select name="test_input" placeholder="Placeholder" data-limit="5">Title</st-tagged-select>
-      <st-tagged-select name="test_input" placeholder="Placeholder" data-limit="5">Title</st-tagged-select>
-      <st-tagged-select name="test_input" placeholder="Placeholder" data-limit="5">Title</st-tagged-select>
+      <st-input
+        placeholder="st-input placeholder"
+        name="st-input"
+      >st-input</st-input>
+      <st-range
+        data-left-name="st-left-range"
+        data-right-name="st-right-range"
+      ></st-range>
+      <st-rating name="st-rating"></st-rating>
+      <st-select placeholder="st-select" name="st-select">st-select</st-select>
+      <st-tagged-select placeholder="st-tagged-select" name="st-tagged-select">st-tagged-select</st-tagged-select>
+      <st-textarea placeholder="st-textarea" name="st-textarea">words</st-textarea>
       <button type="submit" class="btn btn-neutral my-2">Submit</button>
     </form>
     <script>
-      const taggedSelects = document.querySelectorAll("st-tagged-select");
-      taggedSelects.forEach((select) => {
-        select.setAttribute("data-options", JSON.stringify([
-          { title: "Option #1", value: "option-1", chip: "opt-1" },
-          { title: "Option #2", value: "option-2", chip: "opt-2" },
-          { title: "Option #3", value: "option-3", chip: "opt-3" },
-          { title: "Option #4", value: "option-4", chip: "opt-4" },
-          { title: "Option #5", value: "option-5", chip: "opt-5" },
-        ]));
-      });
+      const options = [
+        { title: "Option #1", value: "option-1", chip: "opt-1" },
+        { title: "Option #2", value: "option-2", chip: "opt-2" },
+        { title: "Option #3", value: "option-3", chip: "opt-3" },
+        { title: "Option #4", value: "option-4", chip: "opt-4" },
+        { title: "Option #5", value: "option-5", chip: "opt-5" },
+      ];
+
+      const select = document.querySelector("st-select");
+      select.limit = 5;
+      select.options = options;
+
+      const taggedSelect = document.querySelector("st-tagged-select");
+      taggedSelect.limit = 5;
+      taggedSelect.options = options;
+      taggedSelect.tagClick = (tag) => console.log(tag);
 
       const form = document.querySelector("form");
       form.addEventListener("submit", (event) => {
