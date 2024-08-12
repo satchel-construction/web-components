@@ -87,6 +87,8 @@ export default class Select extends HTMLElement {
     this.render();
   }
 
+  get limit() { return this._limit; }
+
   /** @param {number} newValue */
   set limit(newValue) { 
     this._limit = newValue; 
