@@ -12,11 +12,11 @@
   </head>
   <body>
     <form class="w-96 p-4 flex flex-col gap-1">
-      <st-select name="test_input" placeholder="Placeholder">Title</st-select>
+      <st-tagged-select name="test_input" placeholder="Placeholder">Title</st-tagged-select>
       <button type="submit" class="btn btn-neutral my-2">Submit</button>
     </form>
     <script>
-      const select = document.querySelector("st-select");
+      const select = document.querySelector("st-tagged-select");
       select.limit = 5;
       select.options = [
         { title: "Option #1", value: "option-1", chip: "opt-1" },

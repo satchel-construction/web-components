@@ -1,55 +1,76 @@
 import Select from './select.js';
 
+/**
+ * @typedef {Object} Option
+ * @property {string} title
+ * @property {string} value
+ * @property {string} chip
+ * @property {boolean|undefined} active
+ */
+
 export default class TaggedSelect extends Select {
-  static observedAttributes = ["data-options", "data-limit", "data-tagged", "data-accessible", "data-error", "placeholder"];
+  constructor() { 
+    super(); 
 
-  constructor() {
-    super();
+    /** @type {Set<string>} */
+    this._tagged = new Set();
+    this._tagClick = null;
 
-    this.tagged = new Set();
-    this.accessible = [];
-    this._tagClick = () => {};
+    this._tagged.add("option-1");
 
-    this.tags = document.createElement("div");
-    this.tags.className = "p-1 flex gap-1 flex-wrap";
-    this.shadowRoot.insertBefore(this.tags, this.shadowRoot.querySelector("p#error-field"));
+    this.tagContainer = document.createElement('div');
+    this.tagContainer.className = "p-1 flex gap-1 flex-wrap hidden";
+    this.shadowRoot.insertBefore(this.tagContainer, this.errorMessage);
+  }
+
+  get value() { return this._tagged; }
+  set value(newValue) {
+    if (!(newValue instanceof Set)) { 
+      throw "New value is not an instance of `Set`."; 
+    }
+
+    this._tagged = newValue;
+    this._internals.setFormValue(JSON.stringify(newValue));
+
     this.renderChips();
+    this.render();
   }
 
-  /** @param {{ title: string, value: string, chip: string, active?: boolean }} option */
+  get tagClick() { return this._tagClick; }
+  set tagClick(newValue) {
+    if (typeof newValue !== "function") return; 
+    this._tagClick = newValue;
+  }
+
+  /** @param {Option} option */
   select(option) {
-    this.tagged.add(option.value);
-    this.setAttribute("data-tagged", JSON.stringify(Array.from(this.tagged)));
-  }
+    if (!this._tagged) return;
+    this._tagged.add(option.value);
+    this._internals.setFormValue(this._tagged);
 
-  get value() {
-    return JSON.parse(this.getAttribute("data-tagged"));
-  }
-
-  get tagClick() {
-    return this._tagClick;
-  }
-
-  set tagClick(cb) {
-    if (typeof cb !== "function") return; 
-    this._tagClick = cb;
+    this.renderChips();
+    this.render();
   }
 
   sort() {
-    const searchValue = this.search.value;
-    if (!searchValue.length) return this.accessible; 
+    const accessibleOptions = this._options
+      .filter(({ value }) => !this._tagged.has(value));
 
-    return fuzzysort.go(searchValue, this.accessible, { keys: ["title", "value"] })
-      .map((item) => item.obj);
+    if (!this.searchField?.value?.length) return accessibleOptions; 
+
+    return fuzzysort.go(
+      this.searchField.value, 
+      accessibleOptions, 
+      { keys: ["title", "value"] }
+    ).map((item) => item.obj);
   }
 
-  renderChips() {
-    this.tags.innerHTML = "";
-    const options = this.option_values.filter(option => this.tagged.has(option.value));
-    if (!options.length) this.tags.style.display = "none";
-    else this.tags.style.display = "flex";
-
-    options.forEach((tag) => {
+  /**
+   * @param {Option[]} options 
+   * @returns {Node[]}
+   */
+  generateTags(options) {
+    return options.map((tag) => {
       const tagElement = document.createElement("div");
       const remove = document.createElement("button");
       const text = document.createElement("p");
@@ -58,8 +79,12 @@ export default class TaggedSelect extends Select {
       remove.className = "pl-1 text-neutral-content font-bold cursor-pointer outline-none focus:text-error";
       remove.addEventListener("click", (event) => {
         event.stopImmediatePropagation();
-        const tagsWithoutCurr = Array.from(this.tagged).filter((curr) => curr !== tag.value);
-        this.setAttribute("data-tagged", JSON.stringify(tagsWithoutCurr));
+
+        // Remove the chosen tag from the tag list
+        const current = Array.from(this._tagged)
+          .filter((curr) => curr !== tag.value);
+
+        this.value = new Set(current);
       });
 
       text.className = "truncate";
@@ -70,46 +95,144 @@ export default class TaggedSelect extends Select {
       tagElement.appendChild(text);
       tagElement.appendChild(remove);
 
-      this.tags.appendChild(tagElement); 
+      return tagElement; 
     });
   }
+  
+  renderChips() {
+    // Step 1: Clear the tag container
+    this.tagContainer.innerHTML = "";
 
-  setAccessible() {
-    const filteredOptions = this.option_values.filter((opt) => !this.tagged.has(opt.value));
-    this.setAttribute("data-accessible", JSON.stringify(filteredOptions));
-  }
+    // Step 2: Filter the options
+    const options = this._options
+      .filter(({ value }) => {
+        return this._tagged.has(value);
+      });
 
-  attributeChangedCallback(name, _, newValue) {
-    if (name === "data-options") {
-      this.option_values = JSON.parse(newValue);
-      this.accessible = JSON.parse(newValue);
-      this.render("data-options");
-    } else if (name === "data-limit") {
-      this.limit = +newValue;
-      this.render("data-limit");
-    } else if (name === "data-tagged") {
-      /** @type {Set<string>} */
-      this.tagged = new Set(JSON.parse(newValue));
-      this._internals.setFormValue(newValue);
-      this.renderChips();
+    // Step 3: Hide/Show the tag container
+    if (!options.length) this.tagContainer.style.display = "none";
+    else this.tagContainer.style.display = "flex";
 
-      this.setAccessible();
-      this.render();
-    } else if (name === "data-accessible") {
-      this.accessible = JSON.parse(newValue);
-    } else if (name === "data-error") {
-      if (!newValue) {
-        this.errorField.style.display = "none";
-        this.shadowRoot.querySelector(".input").className = this.shadowRoot.querySelector(".input").className.split(" ").filter((className) => className !== "input-error").join(" ");
-        this.titleElement.className = this.titleElement.className.split(" ").filter((className) => className !== "text-error").join(" ");
-      } else {
-        this.errorField.style.display = "block";
-        this.errorField.innerText = newValue;
-        this.shadowRoot.querySelector(".input").className += " input-error";
-        this.titleElement.className += " text-error";
-      }
-    } else if (name === "placeholder") {
-      this.search.placeholder = newValue;
-    }
+    // Step 4: Generate tag elements
+    const elements = this.generateTags(options);
+
+    // Step 5: Append the elements
+    elements.forEach((element) => {
+      this.tagContainer.appendChild(element);
+    });
   }
 }
+
+// export default class TaggedSelect extends Select {
+//   static observedAttributes = ["data-options", "data-limit", "data-tagged", "data-accessible", "data-error", "placeholder"];
+// 
+//   constructor() {
+//     super();
+// 
+//     this.tagged = new Set();
+//     this.accessible = [];
+//     this._tagClick = () => {};
+// 
+//     this.tags = document.createElement("div");
+//     this.tags.className = "p-1 flex gap-1 flex-wrap";
+//     this.shadowRoot.insertBefore(this.tags, this.shadowRoot.querySelector("p#error-field"));
+//     this.renderChips();
+//   }
+// 
+//   /** @param {{ title: string, value: string, chip: string, active?: boolean }} option */
+//   select(option) {
+//     this.tagged.add(option.value);
+//     this.setAttribute("data-tagged", JSON.stringify(Array.from(this.tagged)));
+//   }
+// 
+//   get value() {
+//     return JSON.parse(this.getAttribute("data-tagged"));
+//   }
+// 
+//   get tagClick() {
+//     return this._tagClick;
+//   }
+// 
+//   set tagClick(cb) {
+//     if (typeof cb !== "function") return; 
+//     this._tagClick = cb;
+//   }
+// 
+//   sort() {
+//     const searchValue = this.search.value;
+//     if (!searchValue.length) return this.accessible; 
+// 
+//     return fuzzysort.go(searchValue, this.accessible, { keys: ["title", "value"] })
+//       .map((item) => item.obj);
+//   }
+// 
+//   renderChips() {
+//     this.tags.innerHTML = "";
+//     const options = this.option_values.filter(option => this.tagged.has(option.value));
+//     if (!options.length) this.tags.style.display = "none";
+//     else this.tags.style.display = "flex";
+// 
+//     options.forEach((tag) => {
+//       const tagElement = document.createElement("div");
+//       const remove = document.createElement("button");
+//       const text = document.createElement("p");
+// 
+//       remove.innerText = "x";
+//       remove.className = "pl-1 text-neutral-content font-bold cursor-pointer outline-none focus:text-error";
+//       remove.addEventListener("click", (event) => {
+//         event.stopImmediatePropagation();
+//         const tagsWithoutCurr = Array.from(this.tagged).filter((curr) => curr !== tag.value);
+//         this.setAttribute("data-tagged", JSON.stringify(tagsWithoutCurr));
+//       });
+// 
+//       text.className = "truncate";
+//       text.innerText = tag.chip;
+// 
+//       tagElement.className = tag.active === false ? "badge badge-ghost" : "badge badge-neutral";
+//       tagElement.addEventListener("click", () => this.tagClick(tag));
+//       tagElement.appendChild(text);
+//       tagElement.appendChild(remove);
+// 
+//       this.tags.appendChild(tagElement); 
+//     });
+//   }
+// 
+//   setAccessible() {
+//     const filteredOptions = this.option_values.filter((opt) => !this.tagged.has(opt.value));
+//     this.setAttribute("data-accessible", JSON.stringify(filteredOptions));
+//   }
+// 
+//   attributeChangedCallback(name, _, newValue) {
+//     if (name === "data-options") {
+//       this.option_values = JSON.parse(newValue);
+//       this.accessible = JSON.parse(newValue);
+//       this.render("data-options");
+//     } else if (name === "data-limit") {
+//       this.limit = +newValue;
+//       this.render("data-limit");
+//     } else if (name === "data-tagged") {
+//       /** @type {Set<string>} */
+//       this.tagged = new Set(JSON.parse(newValue));
+//       this._internals.setFormValue(newValue);
+//       this.renderChips();
+// 
+//       this.setAccessible();
+//       this.render();
+//     } else if (name === "data-accessible") {
+//       this.accessible = JSON.parse(newValue);
+//     } else if (name === "data-error") {
+//       if (!newValue) {
+//         this.errorField.style.display = "none";
+//         this.shadowRoot.querySelector(".input").className = this.shadowRoot.querySelector(".input").className.split(" ").filter((className) => className !== "input-error").join(" ");
+//         this.titleElement.className = this.titleElement.className.split(" ").filter((className) => className !== "text-error").join(" ");
+//       } else {
+//         this.errorField.style.display = "block";
+//         this.errorField.innerText = newValue;
+//         this.shadowRoot.querySelector(".input").className += " input-error";
+//         this.titleElement.className += " text-error";
+//       }
+//     } else if (name === "placeholder") {
+//       this.search.placeholder = newValue;
+//     }
+//   }
+// }

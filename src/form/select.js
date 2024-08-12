@@ -54,6 +54,7 @@ export default class Select extends HTMLElement {
     this.inputContainer = this.shadowRoot.querySelector("label#input-container");
     this.dropdownContent = this.inputContainer.querySelectorAll(":not(input)");
 
+    /** @type {Option[]} */
     this._options = [];
     this._limit = 50;
   }
