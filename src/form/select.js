@@ -52,7 +52,7 @@ export default class Select extends HTMLElement {
     this.titleElement = this.shadowRoot.querySelector("p#title");
     this.errorMessage = this.shadowRoot.querySelector("p#error-field");
     this.inputContainer = this.shadowRoot.querySelector("label#input-container");
-    this.dropdownContent = this.inputContainer.querySelectorAll(".input :not(input)");
+    this.dropdownContent = this.inputContainer.querySelectorAll(":not(input)");
 
     /** @type {Option[]} */
     this._options = [];

@@ -59,7 +59,7 @@ export default class Input extends HTMLElement {
     this.inputContainer.className = this.inputContainer.className
       .split(" ").filter((className) => className !== "input-error").join(" ");
 
-    this.innerTitle.className = this.innerTitle.className
+    this.titleElement.className = this.titleElement.className
       .split(" ").filter((className) => className !== "text-error").join(" ");
   }
 
