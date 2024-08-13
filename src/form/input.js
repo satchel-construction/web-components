@@ -51,7 +51,7 @@ export default class Input extends HTMLElement {
     this.errorMessage.style.display = "block";
     this.errorMessage.innerText = newValue;
     this.inputContainer.className += " input-error";
-    this.innerTitle.className += " text-error";
+    this.titleElement.className += " text-error";
   }
 
   clearErrors() {
