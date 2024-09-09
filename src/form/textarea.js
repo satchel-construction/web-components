@@ -15,8 +15,6 @@ export default class TextArea extends HTMLElement {
     const template = document.createElement("template");
     template.innerHTML = `
       <div class="input input-bordered h-full p-0">
-        <p id="title" class="text-xs px-2 pt-2 title"><slot></slot></p>
-        <div class="divider !m-0 w-full title"></div>
         <textarea class="w-full px-2 py-2 outline-none bg-transparent min-h-10 -mb-[6px] placeholder:text-base placeholder:opacity-25" autocomplete="off"></textarea>
       </div>
       <p class="text-error text-sm py-1 hidden" id="error-message"></p>

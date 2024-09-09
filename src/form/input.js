@@ -15,8 +15,6 @@ export default class Input extends HTMLElement {
     const template = document.createElement("template");
     template.innerHTML = `
       <div class="input input-bordered h-full p-0">
-        <p id="title" class="text-xs px-2 pt-2"><slot></slot></p>
-        <div class="divider !m-0 w-full"></div>
         <input class="h-10 w-full px-2 py-2 placeholder:opacity-25" autocomplete="off">
       </div>
       <p class="text-error text-sm py-1 hidden" id="error-message"></p>
@@ -28,7 +26,6 @@ export default class Input extends HTMLElement {
 
     this.inputContainer = this.shadowRoot.querySelector(".input");
     this.inputField = this.shadowRoot.querySelector("input");
-    this.titleElement = this.shadowRoot.querySelector("#title");
     this.errorMessage = this.shadowRoot.querySelector("#error-message");
 
     this.shadowRoot.querySelectorAll(".input :not(input)").forEach((element) => {
@@ -51,16 +48,12 @@ export default class Input extends HTMLElement {
     this.errorMessage.style.display = "block";
     this.errorMessage.innerText = newValue;
     this.inputContainer.className += " input-error";
-    this.titleElement.className += " text-error";
   }
 
   clearErrors() {
     this.errorMessage.style.display = "none";
     this.inputContainer.className = this.inputContainer.className
       .split(" ").filter((className) => className !== "input-error").join(" ");
-
-    this.titleElement.className = this.titleElement.className
-      .split(" ").filter((className) => className !== "text-error").join(" ");
   }
 
   bindEvents() {

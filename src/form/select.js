@@ -33,8 +33,6 @@ export default class Select extends HTMLElement {
     template.innerHTML = `
       <div class="flex flex-col gap-y-1 select-box">
         <label id="input-container" class="input input-bordered flex flex-col items-center w-full label h-fit !p-0">
-          <p id="title" class="text-xs px-2 pt-2 title text-start w-full hidden"><slot></slot></p>
-          <div class="divider hidden !m-0 title"></div>
           <input id="search" class="w-full self-start px-4 py-2 placeholder:opacity-25" size="1" />
           <div class="divider hidden !m-0"></div>
           <ul id="options" class="dropdown-content z-[1] menu p-2 bg-base-100 w-full hidden max-h-72 overflow-scroll flex-nowrap options !p-0 bg-transparent rounded-lg"></ul>
@@ -49,7 +47,6 @@ export default class Select extends HTMLElement {
 
     this.searchField = this.shadowRoot.querySelector("input#search");
     this.optionsContainer = this.shadowRoot.querySelector("ul#options");
-    this.titleElement = this.shadowRoot.querySelector("p#title");
     this.errorMessage = this.shadowRoot.querySelector("p#error-field");
     this.inputContainer = this.shadowRoot.querySelector("label#input-container");
     this.dropdownContent = this.inputContainer.querySelectorAll(":not(input)");
@@ -68,7 +65,6 @@ export default class Select extends HTMLElement {
     this.errorMessage.style.display = "block";
     this.errorMessage.innerText = newValue;
     this.inputContainer.className += " input-error";
-    this.titleElement.className += " text-error";
 
     this.render();
   }
@@ -76,7 +72,6 @@ export default class Select extends HTMLElement {
   clearErrors() {
     this.errorMessage.style.display = "none";
     this.inputContainer.className = removeClass(this.inputContainer.className, "input-error");
-    this.titleElement.className = removeClass(this.titleElement.className, "text-error");
 
     this.render();
   }
