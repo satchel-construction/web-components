@@ -58,7 +58,6 @@ export default class Input extends HTMLElement {
 
   bindEvents() {
     this.inputField.addEventListener("focus", () => {
-      this.inputField.style.paddingTop = "0";
       this.shadowRoot.querySelectorAll(".input :not(input)")
         .forEach((element) => {
           element.style.display = "flex"
@@ -66,7 +65,6 @@ export default class Input extends HTMLElement {
     });
 
     this.inputField.addEventListener("focusout", () => {
-      this.inputField.style.paddingTop = "8px";
       this.shadowRoot.querySelectorAll(".input :not(input)")
         .forEach((element) => element.style.display = "none");
     });

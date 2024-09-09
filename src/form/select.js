@@ -182,7 +182,6 @@ export default class Select extends HTMLElement {
     });
 
     this.searchField.style.paddingBottom = '0';
-    this.searchField.style.paddingTop = '0';
   }
 
   ravel(event) {
@@ -194,7 +193,6 @@ export default class Select extends HTMLElement {
     });
 
     this.searchField.style.paddingBottom = '0.5rem';
-    this.searchField.style.paddingTop = '0.5rem';
   }
 
   connectedCallback() {

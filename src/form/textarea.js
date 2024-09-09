@@ -26,7 +26,6 @@ export default class TextArea extends HTMLElement {
 
     this.inputContainer = this.shadowRoot.querySelector(".input");
     this.inputField = this.shadowRoot.querySelector("textarea");
-    this.titleElement = this.shadowRoot.querySelector("#title");
     this.errorMessage = this.shadowRoot.querySelector("#error-message");
 
     this.shadowRoot.querySelectorAll(".input :not(textarea)")
@@ -42,13 +41,11 @@ export default class TextArea extends HTMLElement {
 
   bindEvents() {
     this.inputField.addEventListener("focus", () => {
-      this.inputField.style.paddingTop = "0";
       this.shadowRoot.querySelectorAll(".input :not(textarea)")
         .forEach((element) => element.style.display = "flex");
     });
 
     this.inputField.addEventListener("focusout", () => {
-      this.inputField.style.paddingTop = "8px";
       this.shadowRoot.querySelectorAll(".input :not(textarea)")
         .forEach((element) => element.style.display = "none");
     });
@@ -72,8 +69,6 @@ export default class TextArea extends HTMLElement {
     this.errorMessage.style.display = "none";
     this.inputContainer.className = this.inputContainer.className
       .split(" ").filter((className) => className !== "input-error").join(" ");
-    this.titleElement.className = this.titleElement.className
-      .split(" ").filter((className) => className !== "text-error").join(" ");
   }
 
   attributeChangedCallback(name, _, newValue) {
