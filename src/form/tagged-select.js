@@ -53,9 +53,6 @@ export default class TaggedSelect extends Select {
 
     if (!this.searchField?.value?.length) return accessibleOptions; 
 
-    const foundById = accessibleOptions.find((opt) => opt.value === this.searchField.value);
-    if (!!foundById) return [{ obj: foundById }];
-
     return fuzzysort.go(
       this.searchField.value, 
       accessibleOptions, 

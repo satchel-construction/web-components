@@ -112,9 +112,6 @@ export default class Select extends HTMLElement {
   sort() {
     if (!this.searchField.value) return this._options; 
 
-    const foundById = this._options.find((opt) => opt.value === this.searchField.value);
-    if (!!foundById) return [{ obj: foundById }];
-
     return fuzzysort.go(
       this.searchField.value, 
       this._options,
