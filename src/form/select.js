@@ -33,7 +33,7 @@ export default class Select extends HTMLElement {
     template.innerHTML = `
       <div class="flex flex-col gap-y-1 select-box">
         <label id="input-container" class="input input-bordered flex flex-col items-center w-full label h-fit !p-0">
-          <input id="search" class="w-full self-start px-4 py-2 placeholder:opacity-25" size="1" />
+          <input autocomplete="off" id="search" class="w-full self-start px-4 py-2 placeholder:opacity-25" size="1" />
           <div class="divider hidden !m-0"></div>
           <ul id="options" class="dropdown-content z-[1] menu p-2 bg-base-100 w-full hidden max-h-72 overflow-scroll flex-nowrap options !p-0 bg-transparent rounded-lg"></ul>
         </label>

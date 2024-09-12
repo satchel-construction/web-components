@@ -15,7 +15,7 @@ export default class Input extends HTMLElement {
     const template = document.createElement("template");
     template.innerHTML = `
       <div class="input input-bordered h-full p-0">
-        <input class="h-10 w-full px-2 py-2 placeholder:opacity-25" autocomplete="off">
+        <input autocomplete="off" class="h-10 w-full px-2 py-2 placeholder:opacity-25" autocomplete="off">
       </div>
       <p class="text-error text-sm py-1 hidden" id="error-message"></p>
     `;
