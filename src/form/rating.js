@@ -16,7 +16,7 @@ export default class Rating extends HTMLElement {
     template.innerHTML = `
       <div class="flex flex-row p-1">
         <div class="flex flex-col w-3/5 gap-2">
-          <p class="text-md align-middle" id="title"><slot></slot></p>
+          <p class="text-sm align-middle" id="title"><slot></slot></p>
         </div>
         <div class="flex items-center justify-end grow">
           <div class="rating rating-sm">

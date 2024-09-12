@@ -16,7 +16,7 @@ export default class Range extends HTMLElement {
     template.innerHTML = `
       <div class="flex flex-row p-1">
         <div class="flex flex-col w-3/5 gap-2">
-          <p class="text-md pb-2"><slot></slot></p>
+          <p class="text-sm pb-2"><slot></slot></p>
           <div class="relative">
             <div id="intersection" class="w-full h-3 rounded-full"></div>
             <input class="range range-xs no-slider appearance-none w-full outline-none absolute m-auto top-0 bottom-0 bg-transparent pointer-events-none" type="range" id="left-range" value="1" min="1" max="5">
