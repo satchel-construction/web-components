@@ -158,6 +158,8 @@ export default class Select extends HTMLElement {
     this._value = option.value;
 
     this.render();
+
+    setTimeout(() => this.ravel({ target: null }), 1);
   }
 
   render() {
@@ -197,9 +199,9 @@ export default class Select extends HTMLElement {
 
   connectedCallback() {
     this.searchField.addEventListener("keyup", () => this.render());
-    this.searchField.addEventListener("focus", () => this.unravel());
+    this.searchField.addEventListener("focus", (e) => this.unravel(e));
     this.addEventListener("focusout", (e) => this.ravel(e));
-    document.addEventListener('mousedown', (e) => this.ravel(e));
+    document.addEventListener('click', (e) => this.ravel(e));
   }
 
   attributeChangedCallback(name, _, newValue) {
