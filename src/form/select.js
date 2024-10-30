@@ -94,12 +94,12 @@ export default class Select extends HTMLElement {
   /** @returns {string} */
   get value() { return this._value; }
 
-  /** @param {Function} newValue */
+  /** @param {string} newValue */
   set onSelect(newValue) {
     this._onSelect = newValue;
   }
 
-  /** @returns {Function} */
+  /** @returns {string} */
   get onSelect() { return this._onSelect; }
 
   /** @param {string} newValue */

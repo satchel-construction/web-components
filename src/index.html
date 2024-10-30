@@ -38,6 +38,7 @@
       const select = document.querySelector("st-select");
       select.limit = 5;
       select.options = options;
+      select.onSelect = (opt) => console.log(opt);
 
       const taggedSelect = document.querySelector("st-tagged-select");
       taggedSelect.limit = 5;
