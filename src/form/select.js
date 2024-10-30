@@ -54,6 +54,7 @@ export default class Select extends HTMLElement {
     /** @type {Option[]} */
     this._options = [];
     this._limit = 50;
+    this._onSelect = () => { };
   }
 
   get error() { return this.errorMessage.innerText || null; }
@@ -77,26 +78,34 @@ export default class Select extends HTMLElement {
   }
 
   /** @param {Option[]} newValue */
-  set options(newValue) { 
-    this._options = newValue; 
+  set options(newValue) {
+    this._options = newValue;
     this.render();
   }
 
   get limit() { return this._limit; }
 
   /** @param {number} newValue */
-  set limit(newValue) { 
-    this._limit = newValue; 
+  set limit(newValue) {
+    this._limit = newValue;
     this.render();
   }
 
   /** @returns {string} */
   get value() { return this._value; }
 
+  /** @param {Function} newValue */
+  set onSelect(newValue) {
+    this._onSelect = newValue;
+  }
+
+  /** @returns {Function} */
+  get onSelect() { return this._onSelect; }
+
   /** @param {string} newValue */
   set value(newValue) {
     if (!newValue) {
-      this.searchField.value = ""; 
+      this.searchField.value = "";
       this._internals.setFormValue("");
       this._value = "";
 
@@ -110,10 +119,10 @@ export default class Select extends HTMLElement {
   }
 
   sort() {
-    if (!this.searchField.value) return this._options; 
+    if (!this.searchField.value) return this._options;
 
     return fuzzysort.go(
-      this.searchField.value, 
+      this.searchField.value,
       this._options,
       { keys: ["title", "value"] }
     ).map(({ obj }) => obj);
@@ -153,11 +162,12 @@ export default class Select extends HTMLElement {
 
   /** @param {Option} option */
   select(option) {
-    this.searchField.value = option.title; 
+    this.searchField.value = option.title;
     this._internals.setFormValue(option.value);
     this._value = option.value;
 
     this.render();
+    this._onSelect(option);
 
     setTimeout(() => this.ravel({ target: null }), 1);
   }
@@ -168,10 +178,10 @@ export default class Select extends HTMLElement {
 
     // Step 2: Gather sorted options
     const sorted = this.sort();
-    
+
     // Step 3: Create option elements
     const elements = this.generateOptions(sorted);
-    
+
     // Step 4: Insert option elements
     elements.forEach((option) => {
       this.optionsContainer.appendChild(option);
