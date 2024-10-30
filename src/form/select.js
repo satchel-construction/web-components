@@ -208,7 +208,10 @@ export default class Select extends HTMLElement {
   }
 
   connectedCallback() {
-    this.searchField.addEventListener("keyup", () => this.render());
+    this.searchField.addEventListener("keyup", () => {
+      this.render();
+      this.unravel();
+    });
     this.searchField.addEventListener("focus", (e) => this.unravel(e));
     this.addEventListener("focusout", (e) => this.ravel(e));
     document.addEventListener('click', (e) => this.ravel(e));
