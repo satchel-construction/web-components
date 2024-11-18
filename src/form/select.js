@@ -162,6 +162,8 @@ export default class Select extends HTMLElement {
 
   /** @param {Option} option */
   select(option) {
+    console.log(option);
+
     this.searchField.value = option.title;
     this._internals.setFormValue(option.value);
     this._value = option.value;
