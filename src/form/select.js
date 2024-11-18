@@ -96,6 +96,7 @@ export default class Select extends HTMLElement {
 
   /** @param {string} newValue */
   set onSelect(newValue) {
+    console.log(newValue);
     this._onSelect = newValue;
   }
 

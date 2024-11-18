@@ -9,8 +9,8 @@ import Select from './select.js';
  */
 
 export default class TaggedSelect extends Select {
-  constructor() { 
-    super(); 
+  constructor() {
+    super();
 
     /** @type {Set<string>} */
     this._tagged = new Set();
@@ -23,8 +23,8 @@ export default class TaggedSelect extends Select {
 
   get value() { return this._tagged; }
   set value(newValue) {
-    if (!(newValue instanceof Set)) { 
-      throw "New value is not an instance of `Set`."; 
+    if (!(newValue instanceof Set)) {
+      throw "New value is not an instance of `Set`.";
     }
 
     this._tagged = newValue;
@@ -36,7 +36,7 @@ export default class TaggedSelect extends Select {
 
   get tagClick() { return this._tagClick; }
   set tagClick(newValue) {
-    if (typeof newValue !== "function") return; 
+    if (typeof newValue !== "function") return;
     this._tagClick = newValue;
   }
 
@@ -51,11 +51,11 @@ export default class TaggedSelect extends Select {
     const accessibleOptions = this._options
       .filter(({ value }) => !this._tagged.has(value));
 
-    if (!this.searchField?.value?.length) return accessibleOptions; 
+    if (!this.searchField?.value?.length) return accessibleOptions;
 
     return fuzzysort.go(
-      this.searchField.value, 
-      accessibleOptions, 
+      this.searchField.value,
+      accessibleOptions,
       { keys: ["title", "value"] }
     ).map((item) => item.obj);
   }
@@ -85,15 +85,15 @@ export default class TaggedSelect extends Select {
       text.className = "truncate";
       text.innerText = tag.chip;
 
-      tagElement.className = tag.active === false ? "badge badge-ghost" : "badge badge-neutral";
+      tagElement.className = tag.active === false ? "badge badge-ghost w-full" : "badge badge-neutral w-full";
       tagElement.addEventListener("click", () => this.tagClick(tag));
       tagElement.appendChild(text);
       tagElement.appendChild(remove);
 
-      return tagElement; 
+      return tagElement;
     });
   }
-  
+
   renderChips() {
     // Step 1: Clear the tag container
     this.tagContainer.innerHTML = "";
