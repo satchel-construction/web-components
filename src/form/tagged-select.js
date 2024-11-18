@@ -19,6 +19,8 @@ export default class TaggedSelect extends Select {
     this.tagContainer = document.createElement('div');
     this.tagContainer.className = "p-1 flex gap-1 flex-wrap hidden";
     this.shadowRoot.insertBefore(this.tagContainer, this.errorMessage);
+
+    this._onSelect = () => { };
   }
 
   get value() { return this._tagged; }
@@ -40,11 +42,20 @@ export default class TaggedSelect extends Select {
     this._tagClick = newValue;
   }
 
+  /** @param {Function} newValue */
+  set onSelect(newValue) {
+    this._onSelect = newValue;
+  }
+
+  /** @returns {Function} */
+  get onSelect() { return this._onSelect; }
+
   /** @param {Option} option */
   select(option) {
     if (!this._tagged) return;
     this._tagged.add(option.value);
     this.value = this._tagged;
+    this.onSelect(option);
   }
 
   sort() {
