@@ -96,7 +96,6 @@ export default class Select extends HTMLElement {
 
   /** @param {string} newValue */
   set onSelect(newValue) {
-    console.log(newValue);
     this._onSelect = newValue;
   }
 
@@ -168,7 +167,7 @@ export default class Select extends HTMLElement {
     this._value = option.value;
 
     this.render();
-    this._onSelect(option);
+    this.onSelect(option);
 
     setTimeout(() => this.ravel({ target: null }), 1);
   }
