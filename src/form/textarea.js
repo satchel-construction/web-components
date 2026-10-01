@@ -37,6 +37,7 @@ export default class TextArea extends HTMLElement {
   get value() { return this.innerInput.value; }
   set value(newValue) {
     this.inputField.value = newValue;
+    this._internals.setFormValue(newValue);
   }
 
   bindEvents() {
